@@ -1,0 +1,38 @@
+$ curl -i http://localhost:8081/itens
+HTTP/1.1 200 
+Content-Type: application/json
+Content-Length: 281
+Date: Sun, 25 Oct 2026 19:06:38 GMT
+
+[{"id":1,"nome":"Coxinha","precoCentavos":800,"disponivel":true},{"id":2,"nome":"Pão de queijo","precoCentavos":600,"disponivel":true},{"id":3,"nome":"Suco de laranja","precoCentavos":900,"disponivel":true},{"id":4,"nome":"Bolo de cenoura","precoCentavos":750,"disponivel":false}]
+
+$ curl -i http://localhost:8081/itens/1
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 25 Oct 2026 19:06:38 GMT
+
+{"id":1,"nome":"Coxinha","precoCentavos":800,"disponivel":true}
+
+$ curl -i http://localhost:8081/itens/99
+HTTP/1.1 404 
+Content-Length: 0
+Date: Sun, 25 Oct 2026 19:06:38 GMT
+
+
+
+$ curl -i http://localhost:8091/itens/1
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 25 Oct 2026 19:06:38 GMT
+
+{"id":1,"nome":"Coxinha","precoCentavos":800,"disponivel":true}
+
+$ curl -i http://localhost:8081/saude
+HTTP/1.1 200 
+Content-Length: 0
+Date: Sun, 25 Oct 2026 19:06:38 GMT
+
+
+
