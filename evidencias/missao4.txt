@@ -1,0 +1,36 @@
+=== Teste 1: pedido criado, o Avisos registra a linha ===
+$ curl -i -s -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido.json
+HTTP/1.1 201 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 19:18:54 GMT
+
+{"id":1,"itens":[{"itemId":1,"quantidade":2},{"itemId":3,"quantidade":1}],"totalCentavos":2500,"status":"confirmado"}
+$ grep confirmado /tmp/avisos-8083.log
+2026-10-26T19:18:55.188Z  INFO 10870 --- [avisos] [nio-8083-exec-2] br.com.cantina.avisos.AvisosController   : [avisos-8083] Pedido 1 confirmado, total R$ 25,00
+
+=== Teste 2: Avisos fora do ar, o pedido continua 201 ===
+$ curl -i -s -w \nTempo total: %{time_total}s\n -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido.json
+HTTP/1.1 201 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 19:19:09 GMT
+
+{"id":2,"itens":[{"itemId":1,"quantidade":2},{"itemId":3,"quantidade":1}],"totalCentavos":2500,"status":"confirmado"}
+Tempo total: 0.017262s
+
+$ grep Nao foi possivel entregar /tmp/pedidos.log
+2026-10-26T19:19:09.258Z  WARN 10908 --- [pedidos] [     virtual-57] b.c.cantina.pedidos.PublicadorDeEventos  : Nao foi possivel entregar o evento 677592bc-2d9a-4d6d-948a-d6514b30de4c a http://localhost:8083/eventos: I/O error on POST request for "http://localhost:8083/eventos": null
+
+=== Teste 3: segundo consumidor so por configuracao (ASSINANTES com dois enderecos) ===
+$ curl -i -s -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido.json
+HTTP/1.1 201 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 19:19:33 GMT
+
+{"id":1,"itens":[{"itemId":1,"quantidade":2},{"itemId":3,"quantidade":1}],"totalCentavos":2500,"status":"confirmado"}
+$ grep confirmado /tmp/avisos-8083.log /tmp/avisos-8084.log
+/tmp/avisos-8083.log:2026-10-26T19:19:34.389Z  INFO 13244 --- [avisos] [nio-8083-exec-2] br.com.cantina.avisos.AvisosController   : [avisos-8083] Pedido 1 confirmado, total R$ 25,00
+/tmp/avisos-8084.log:2026-10-26T19:19:34.357Z  INFO 13263 --- [avisos] [nio-8084-exec-3] br.com.cantina.avisos.AvisosController   : [avisos-8084] Pedido 1 confirmado, total R$ 25,00
+

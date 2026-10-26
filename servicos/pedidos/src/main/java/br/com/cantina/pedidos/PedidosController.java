@@ -15,10 +15,13 @@ public class PedidosController {
 
     private final CardapioClient cardapio;
     private final PedidoRepository repositorio;
+    private final PublicadorDeEventos publicador;
 
-    public PedidosController(CardapioClient cardapio, PedidoRepository repositorio) {
+    public PedidosController(CardapioClient cardapio, PedidoRepository repositorio,
+            PublicadorDeEventos publicador) {
         this.cardapio = cardapio;
         this.repositorio = repositorio;
+        this.publicador = publicador;
     }
 
     @PostMapping("/pedidos")
@@ -42,6 +45,7 @@ public class PedidosController {
             total += item.precoCentavos() * linha.quantidade();
         }
         Pedido pedido = repositorio.salvar(novo.itens(), total);
+        publicador.publicarPedidoConfirmado(pedido);
         return ResponseEntity.status(201).body(pedido);
     }
 
