@@ -1,0 +1,38 @@
+$ curl -i -s -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido.json
+HTTP/1.1 201 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 01:24:26 GMT
+
+{"id":1,"itens":[{"itemId":1,"quantidade":2},{"itemId":3,"quantidade":1}],"totalCentavos":2500,"status":"confirmado"}
+$ curl -i -s http://localhost:8082/pedidos/1
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 01:24:26 GMT
+
+{"id":1,"itens":[{"itemId":1,"quantidade":2},{"itemId":3,"quantidade":1}],"totalCentavos":2500,"status":"confirmado"}
+$ curl -i -s -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido-indisponivel.json
+HTTP/1.1 422 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 01:24:26 GMT
+
+{"mensagem":"O item Bolo de cenoura esta indisponivel."}
+$ curl -i -s -w \nTempo total: %{time_total}s\n -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido.json
+HTTP/1.1 503 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 01:30:05 GMT
+Connection: close
+
+{"mensagem":"O Cardapio nao respondeu em ate 2 segundos. Tente novamente em instantes."}
+Tempo total: 0.015942s
+
+$ curl -i -s -X POST http://localhost:8082/pedidos -H Content-Type: application/json --data @evidencias/pedido.json
+HTTP/1.1 201 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 26 Oct 2026 01:31:06 GMT
+
+{"id":2,"itens":[{"itemId":1,"quantidade":2},{"itemId":3,"quantidade":1}],"totalCentavos":2500,"status":"confirmado"}
