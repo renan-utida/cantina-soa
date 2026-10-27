@@ -1,0 +1,22 @@
+sequenceDiagram
+  autonumber
+  actor Cliente
+  participant P as Pedidos (porta 8082)
+  participant C as Cardápio (porta 8081)
+  participant A as Avisos (porta 8083)
+  Cliente->>P: POST /pedidos (pedidos.yaml)
+  loop para cada item do pedido
+    P->>C: GET /itens/{id} (cardapio.yaml), tempo limite 2 s
+    break Cardápio não responde em 2 s
+      P-->>Cliente: 503 com mensagem clara, sem pedido e sem evento
+    end
+    C-->>P: 200 com o item, ou 404
+    break item inexistente ou indisponível
+      P-->>Cliente: 422, nenhum pedido é criado
+    end
+  end
+  P->>P: soma o total e guarda o pedido
+  P-->>Cliente: 201 pedido confirmado
+  P--)A: evento cantina.pedido.confirmado (pedido-confirmado.json)
+  A->>A: registra Pedido N confirmado, total R$ 25,00
+  Note over P,A: Se o Avisos estiver fora do ar, o Pedidos só registra um aviso no log e o 201 não muda

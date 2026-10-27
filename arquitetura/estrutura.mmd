@@ -1,0 +1,20 @@
+flowchart LR
+  cliente([Cliente])
+  subgraph pedidosSvc["Pedidos (Java, porta 8082)"]
+    pedidos["Pedidos"]
+    dbP[("pedidos em memória")]
+  end
+  subgraph cardapioSvc["Cardápio (Java, portas 8081 e 8091)"]
+    cardapio["Cardápio"]
+    dbC[("itens do cardápio")]
+  end
+  subgraph avisosSvc["Avisos (Java, portas 8083 e 8084)"]
+    avisos["Avisos"]
+    dbA[("registro de avisos, em log")]
+  end
+  cliente -->|"POST /pedidos (pedidos.yaml)"| pedidos
+  pedidos -->|"GET /itens/{id} (cardapio.yaml), tempo limite 2 s"| cardapio
+  pedidos -.->|"evento cantina.pedido.confirmado (pedido-confirmado.json), via ASSINANTES"| avisos
+  pedidos --- dbP
+  cardapio --- dbC
+  avisos --- dbA
