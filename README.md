@@ -49,9 +49,9 @@ pkill -f "cardapio-0.0.1|avisos-0.0.1|pedidos-0.0.1"
 
 ## Arquitetura
 
-![Visão de estrutura](arquitetura/estrutura.png)
+![Visão de estrutura](arquitetura/img/estrutura.png)
 
-A visão de sequência, as decisões do projeto e os pontos de falha estão em [`arquitetura/arquitetura.md`](arquitetura/arquitetura.md). Os arquivos-fonte dos desenhos (Mermaid) ficam na mesma pasta.
+A visão de sequência, as decisões do projeto e os pontos de falha estão em [`arquitetura/arquitetura.md`](arquitetura/arquitetura.md). Os arquivos-fonte dos desenhos (Mermaid) ficam em `arquitetura/mermaid/` e as imagens em `arquitetura/img/`.
 
 ## Matriz de princípios
 

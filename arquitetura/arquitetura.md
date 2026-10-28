@@ -1,16 +1,16 @@
 # Arquitetura da Cantina
 
-Os desenhos foram feitos em Mermaid. Os arquivos-fonte são `estrutura.mmd` e `sequencia.mmd`, e as imagens são `estrutura.png` e `sequencia.png`. A visão de estrutura cresceu a cada entrega.
+Os desenhos foram feitos em Mermaid. Os arquivos-fonte ficam em `mermaid/` (`estrutura.mmd` e `sequencia.mmd`) e as imagens em `img/` (`estrutura.png` e `sequencia.png`). A visão de estrutura cresceu a cada entrega.
 
 ## Visão de estrutura
 
-![Visão de estrutura](estrutura.png)
+![Visão de estrutura](img/estrutura.png)
 
 Linha contínua: chamada síncrona. Linha tracejada: evento. Cada seta leva o nome do contrato, e cada serviço aparece com os dados que são só dele.
 
 ## Visão de sequência de um pedido
 
-![Sequência de um pedido](sequencia.png)
+![Sequência de um pedido](img/sequencia.png)
 
 Mostra o pedido do início ao fim e os dois caminhos de falha: o Cardápio que não responde em 2 segundos (503) e o item inexistente ou indisponível (422).
 
