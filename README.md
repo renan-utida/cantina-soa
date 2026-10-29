@@ -5,6 +5,8 @@ Laboratório SOA da Cantina: três serviços independentes (Cardápio, Pedidos e
 - **Grupo:** Renan Dias Utida (RM 558540), trabalho individual
 - **Linguagens:** Java 25 com Spring Boot nos três serviços, mais um Cardápio alternativo em Python 3 usado só na prova de fogo
 - **Trilha de eventos:** Trilha A, sem broker, com a variável `ASSINANTES`
+- **Repositório:** https://github.com/renan-utida/cantina-soa
+- **Vídeo da demonstração:** https://youtu.be/ReUD4ufOb9g
 
 ## Como rodar
 
